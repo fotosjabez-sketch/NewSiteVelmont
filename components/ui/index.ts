@@ -4,6 +4,7 @@ export { Eyebrow } from './Eyebrow';
 export { Heading } from './Heading';
 export { Logo } from './Logo';
 export { MountainMark } from './MountainMark';
+export { PendingBlock, PendingMark, PendingNote, PendingValue } from './PendingMark';
 export { Prose } from './Prose';
 export { Section } from './Section';
 export { TextLink } from './TextLink';

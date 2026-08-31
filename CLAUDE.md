@@ -34,6 +34,12 @@ visitors into strategic-analysis requests.
   when a value is still pending — a placeholder never reaches the HTML.
 - `npm run check:launch` fails while any launch-blocking value is pending. Run
   it before any production deploy.
+- Sections that need data the Velmont has not supplied use the review gate in
+  `lib/content/preview.ts`. `showsPendingPlaceholders()` is true in development
+  and in builds carrying `NEXT_PUBLIC_SHOW_PENDING=1`; everywhere else the
+  placeholder — and, when nothing confirmed is left, the whole section — is not
+  rendered. Any new placeholder, dev note or example content must go through
+  that gate. Verify with a plain `npm run build` and grep the HTML.
 - Do not promise registration, approval or grant. Distinguish protocol,
   analysis, follow-up and grant.
 - Never state a universal deadline: it depends on the órgão, the class and the

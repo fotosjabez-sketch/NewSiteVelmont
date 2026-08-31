@@ -56,6 +56,15 @@ export function Hero() {
           <span aria-hidden="true" className="h-px w-4 bg-(--surface-rule)" />
           <span>Acompanhamento próximo.</span>
         </p>
+
+        {/* Indicação de scroll: antecipa a subida e leva até ela por teclado. */}
+        <a
+          href="#a-subida"
+          className="mt-(--space-lg) inline-flex items-center gap-3 self-start rounded-(--radius-xs) font-sans text-(length:--text-xs) tracking-(--tracking-eyebrow) text-(--surface-muted) uppercase transition-colors duration-(--duration-fast) hover:text-(--surface-fg) focus-visible:outline-2 focus-visible:outline-offset-4 focus-visible:outline-(--surface-ring)"
+        >
+          Comece pela ideia
+          <span aria-hidden="true" className="h-px w-10 bg-(--surface-rule)" />
+        </a>
       </Container>
     </section>
   );

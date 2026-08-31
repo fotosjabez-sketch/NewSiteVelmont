@@ -22,11 +22,18 @@ Tudo de uma vez: `npm run check`.
 
 ## Responsividade
 
-- [x] Sem scroll lateral em 320px (`document.scrollWidth === clientWidth`)
-- [x] Sem scroll lateral em 390px
-- [x] Sem scroll lateral em 1440px
-- [ ] Conferir em 768px e 1024px quando houver seções com pin
+Medido com `document.documentElement.scrollWidth === clientWidth` na home
+inteira, depois de rolar a página toda para carregar tudo:
+
+- [x] 320px — sem scroll lateral
+- [x] 375px — sem scroll lateral
+- [x] 768px — sem scroll lateral
+- [x] 1024px — sem scroll lateral
+- [x] 1440px — sem scroll lateral
 - [x] Strings longas sem espaço (e-mail) quebram em vez de esticar a coluna
+- [x] As montanhas decorativas sangram além da viewport de propósito, sempre
+      dentro de um contêiner com `overflow-hidden`
+- [ ] Reconferir quando houver seções com pin (fase de motion)
 
 Como verificar rápido, com o servidor rodando:
 
@@ -65,6 +72,14 @@ document.documentElement.scrollWidth - document.documentElement.clientWidth; // 
 | botão sólido, todas as superfícies     | 12.76 a 18.01:1 | `--surface-accent` sobre `--surface-bg` |
 | argila `#8B6C63` sobre marfim          |          4.26:1 | **só borda e decoração — nunca texto**  |
 
+- [x] Diagnóstico de entrada operável por teclado: Espaço marca, setas
+      circulam entre as três trilhas, e exatamente um painel fica visível em
+      cada estado. Sem depender de hover e sem JavaScript
+- [x] Anel de foco visível no rótulo do diagnóstico, já que o radio é
+      visualmente oculto
+- [x] Todo campo do formulário tem `label` associada
+- [x] Toda imagem tem `alt`
+- [x] Ordem de tabulação segue a ordem de leitura
 - [ ] Auditoria axe automatizada (entra junto com o Playwright, fase de QA)
 - [ ] Navegação por leitor de tela nas seções com pin (fase de motion)
 
@@ -74,7 +89,12 @@ document.documentElement.scrollWidth - document.documentElement.clientWidth; // 
 
 - [x] Nenhum número inventado no HTML
 - [x] Nenhum depoimento sem autorização
-- [x] Nenhum placeholder publicado — valores pendentes não renderizam
+- [x] Nenhum placeholder publicado — verificado por grep no HTML do build de
+      produção: `pendente`, `não publicável`, `exemplo`, `[X]`, `[Y]`, `[Z]` e
+      os títulos dos artigos de exemplo somam zero ocorrência
+- [x] Seções sem nenhum dado confirmado (números, depoimentos) não são
+      renderizadas em produção
+- [x] Quadro de retrato vazio não vai ao ar: sem foto, o bloco sai
 - [x] Aviso no rodapé: conteúdo informativo não substitui análise específica
 - [x] Nenhuma promessa de deferimento ou prazo universal
 - [ ] Revisão de copy pelas fundadoras
@@ -108,5 +128,21 @@ document.documentElement.scrollWidth - document.documentElement.clientWidth; // 
 
 ## Sem JavaScript
 
-- [x] Conteúdo essencial visível sem JS (hero, rodapé, navegação do rodapé)
+- [x] A home inteira é legível sem JS: só o menu mobile e o cabeçalho sólido
+      dependem de JavaScript
+- [x] O diagnóstico de entrada funciona sem JS (radios + `peer-checked`)
 - [ ] Formulário de análise precisa de alternativa sem JS (fase do formulário)
+
+---
+
+## Bloqueios de lançamento em aberto
+
+Além das 10 pendências de dados listadas em `docs/content-inventory.md`:
+
+- [ ] **O formulário de análise não envia.** A marcação está pronta e
+      `lib/whatsapp.ts` já monta o link, mas os dois só são ligados na fase do
+      formulário, com React Hook Form + Zod. O botão é `type="button"` para não
+      simular um envio.
+- [ ] Páginas internas ainda não existem: os links da home apontam para rotas
+      que retornam 404 (fase de páginas internas).
+- [ ] `/conteudos` e as páginas de artigo dependem do CMS (fase 8).
