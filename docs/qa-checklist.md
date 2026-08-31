@@ -94,6 +94,18 @@ document.documentElement.scrollWidth - document.documentElement.clientWidth; // 
 | botão sólido, todas as superfícies     | 12.76 a 18.01:1 | `--surface-accent` sobre `--surface-bg` |
 | argila `#8B6C63` sobre marfim          |          4.26:1 | **só borda e decoração — nunca texto**  |
 
+- [x] Hero com fundo fotográfico: contraste verificado por medição de pixel,
+      não por cálculo de par de cor — a foto tem relevo com pontos de brilho
+      reais que uma cor plana não tem. Método: renderizar a página com o
+      texto tornado transparente (`color: transparent` via injeção de CSS) e
+      medir o pixel mais claro em **toda** a área de cada elemento de texto,
+      não por amostragem em pontos. Amostrar só em pontos, ou filtrar "fundo"
+      por distância de cor ao texto, deu falso-negativo: pixels da própria
+      borda antisserrilhada do texto entravam na amostra e pareciam fundo
+      muito claro. Pior caso real, nas duas imagens: 4,94:1 (desktop,
+      indicação de scroll) — acima do mínimo de 4,5:1. Ver
+      `docs/velmont-blueprint.md`, "Ajuste fora de fase — fundo fotográfico
+      do hero"
 - [x] Diagnóstico de entrada operável por teclado: Espaço marca, setas
       circulam entre as três trilhas, e exatamente um painel fica visível em
       cada estado. Sem depender de hover e sem JavaScript

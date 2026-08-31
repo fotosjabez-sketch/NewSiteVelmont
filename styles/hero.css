@@ -1,0 +1,27 @@
+/*
+ * Scrim do fundo fotográfico do hero.
+ *
+ * Duas camadas, e não uma só, porque a foto tem pontos de brilho reais — o
+ * relevo iluminado da rocha, que nas duas imagens cai bem na faixa inferior
+ * do enquadramento, exatamente onde a linha de confiança e a indicação de
+ * scroll ficam. Uma camada uniforme sozinha não segura isso sem escurecer a
+ * foto inteira; a segunda camada reforça mais forte ali.
+ *
+ * Os valores foram calibrados medindo, na imagem final renderizada, o pixel
+ * exato na posição de tela do ponto mais claro de cada foto de origem — não
+ * chutados — e ajustados até o contraste contra --color-sand-600 (a cor de
+ * texto mais escura em uso no hero) passar de 4.5:1 nesse ponto crítico.
+ */
+
+.hero-scrim-base {
+  background-color: color-mix(in srgb, var(--color-wine) 56%, transparent);
+}
+
+.hero-scrim-focus {
+  background-image: radial-gradient(
+    ellipse 70% 80% at 50% 55%,
+    color-mix(in srgb, var(--color-wine) 88%, transparent) 0%,
+    color-mix(in srgb, var(--color-wine) 62%, transparent) 60%,
+    transparent 92%
+  );
+}
