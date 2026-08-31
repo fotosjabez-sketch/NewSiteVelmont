@@ -89,13 +89,57 @@ export const MOUNTAIN_WEIGHT = {
 } as const;
 
 /**
+ * Fração do traço do cume em que fica o ponto mais alto do desenho.
+ * Depois dele a linha desce para o vale — por isso "altitude 100%" quer dizer
+ * traço completo, e não cume.
+ */
+export const RIDGE_SUMMIT_PROGRESS = (() => {
+  const points = POINTS.ridge;
+  const [start, summit] = points;
+  if (!start || !summit) return 0;
+  const toSummit = Math.hypot(summit[0] - start[0], summit[1] - start[1]);
+  return Math.round((toSummit / toLength(points)) * 1000) / 1000;
+})();
+
+/**
  * Altitudes dos quatro beats da narrativa, como fração do avanço do traço
- * principal (0 = base, 1 = cume). Usadas na fase de motion para sincronizar
- * o texto de cada beat com o desenho da linha.
+ * principal (0 = base, 1 = traço completo). O mesmo número posiciona o texto
+ * do beat, o recorte estático e o `stroke-dashoffset` da timeline.
+ *
+ * `exposicao` fica logo antes do cume e `patrimonio` no traço completo: a
+ * passagem de um para o outro é justamente a travessia do ponto mais alto.
  */
 export const MOUNTAIN_ALTITUDES = {
-  ideia: 0.08,
-  valor: 0.36,
-  exposicao: 0.66,
+  ideia: 0.1,
+  valor: 0.38,
+  exposicao: 0.64,
   patrimonio: 1,
 } as const;
+
+/**
+ * Ponto do traço em uma fração do percurso, no sistema do viewBox.
+ * A narrativa usa isto para posicionar as linhas topográficas na altura exata
+ * em que cada beat acontece, em vez de chutar valores de y.
+ */
+export function pointAtProgress(id: MountainStrokeId, progress: number): { x: number; y: number } {
+  const points = POINTS[id];
+  const clamped = Math.min(Math.max(progress, 0), 1);
+  const target = toLength(points) * clamped;
+
+  let travelled = 0;
+  for (let i = 1; i < points.length; i += 1) {
+    const a = points[i - 1];
+    const b = points[i];
+    if (!a || !b) continue;
+
+    const segment = Math.hypot(b[0] - a[0], b[1] - a[1]);
+    if (travelled + segment >= target || i === points.length - 1) {
+      const t = segment === 0 ? 0 : Math.min((target - travelled) / segment, 1);
+      return { x: a[0] + (b[0] - a[0]) * t, y: a[1] + (b[1] - a[1]) * t };
+    }
+    travelled += segment;
+  }
+
+  const last = points[points.length - 1];
+  return { x: last?.[0] ?? 0, y: last?.[1] ?? 0 };
+}

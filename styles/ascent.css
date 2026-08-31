@@ -1,0 +1,70 @@
+/*
+ * A subida — estados de layout da sequência narrativa.
+ *
+ * O estado base é o legível: quatro blocos verticais, montanha desenhada por
+ * inteiro, nada dependendo de JavaScript. É o que vale sem JS, com
+ * `prefers-reduced-motion: reduce` e no mobile.
+ *
+ * O palco fixado só entra quando as três condições valem ao mesmo tempo:
+ * há JavaScript (`[data-js='on']`, marcado antes da primeira pintura), a tela
+ * é de tablet para cima e o sistema não pede movimento reduzido. Como a
+ * decisão é de CSS e não de hidratação, o layout já nasce certo — não há
+ * troca de altura depois da montagem, logo não há layout shift.
+ */
+
+.ascent__stage-mountain {
+  display: none;
+}
+
+@media (min-width: 768px) and (prefers-reduced-motion: no-preference) {
+  [data-js='on'] .ascent {
+    /* O palco precisa de percurso de scroll além da própria altura. */
+    min-height: 200vh;
+  }
+
+  [data-js='on'] .ascent__stage {
+    position: sticky;
+    top: var(--header-height);
+    display: flex;
+    align-items: center;
+    min-height: calc(100vh - var(--header-height));
+    min-height: calc(100svh - var(--header-height));
+  }
+
+  /* Os quatro beats ocupam a mesma célula de grid: a célula cresce até o mais
+     alto deles sozinha, sem posicionamento absoluto e sem min-height chutada. */
+  [data-js='on'] .ascent__beats {
+    display: grid;
+  }
+
+  /* O estado inicial do palco é definido aqui, e não pelo GSAP, por dois
+     motivos: entre a primeira pintura e a montagem da timeline os quatro beats
+     ficariam empilhados e visíveis ao mesmo tempo; e, se o GSAP falhar em
+     carregar, o que sobra é o primeiro beat legível em vez de quatro textos
+     sobrepostos. */
+  [data-js='on'] .ascent__beat {
+    grid-area: 1 / 1;
+    border: 0;
+    padding: 0;
+    opacity: 0;
+  }
+
+  [data-js='on'] .ascent__beat:first-child {
+    opacity: 1;
+  }
+
+  /* No palco existe uma montanha só, grande. Os recortes por beat saem. */
+  [data-js='on'] .ascent__beat-glyph {
+    display: none;
+  }
+
+  [data-js='on'] .ascent__stage-mountain {
+    display: block;
+  }
+}
+
+@media (min-width: 1024px) and (prefers-reduced-motion: no-preference) {
+  [data-js='on'] .ascent {
+    min-height: 280vh;
+  }
+}

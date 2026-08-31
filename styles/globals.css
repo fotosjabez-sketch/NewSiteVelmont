@@ -1,5 +1,6 @@
 @import 'tailwindcss';
 @import './tokens.css';
+@import './ascent.css';
 
 /* ---------------------------------------------------------------------------
  * Base
@@ -135,6 +136,18 @@
     clip-path: inset(50%);
     white-space: nowrap;
     border: 0;
+  }
+
+  /* O cabeçalho é transparente sobre o hero e sólido depois do primeiro
+     trecho de scroll. Vive aqui, e não em utilitários, porque dois
+     utilitários de fundo na mesma camada seriam decididos pela ordem de
+     emissão do CSS. */
+  .site-header {
+    background-color: transparent;
+  }
+
+  .site-header[data-scrolled] {
+    background-color: var(--surface-bg);
   }
 
   /* Régua fina derivada da linha da montanha. */

@@ -61,10 +61,15 @@ export function Header() {
   return (
     <header
       data-surface="wine"
-      data-scrolled={isScrolled ? '' : undefined}
+      data-scrolled={isScrolled || isMenuOpen ? '' : undefined}
+      // O fundo vem de `.site-header[data-scrolled]`, em styles/globals.css, e
+      // não de utilitários: `bg-transparent` e `bg-(--surface-bg)` são dois
+      // utilitários de fundo na mesma camada, e quem vence é a ordem de emissão
+      // do CSS, não a ordem das classes. O cabeçalho ficava transparente sobre
+      // as seções claras, com texto areia sobre marfim.
       className={cn(
-        'fixed inset-x-0 top-0 z-50 bg-transparent transition-colors duration-(--duration-base) ease-(--ease-out)',
-        (isScrolled || isMenuOpen) && 'border-b border-(--surface-rule) bg-(--surface-bg)',
+        'site-header fixed inset-x-0 top-0 z-50 transition-colors duration-(--duration-base) ease-(--ease-out)',
+        (isScrolled || isMenuOpen) && 'border-b border-(--surface-rule)',
       )}
     >
       <Container className="flex h-(--header-height) items-center justify-between gap-6">

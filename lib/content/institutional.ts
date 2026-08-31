@@ -201,12 +201,35 @@ export const about = {
   ),
 } as const;
 
+/* -------------------------------------------------------------------------
+ * Ativos de marca
+ * ---------------------------------------------------------------------- */
+
+/**
+ * O símbolo só existe como bitmap na apresentação. A geometria em
+ * `lib/brand/mountain.ts` é uma reconstrução medida na máscara de pixels e
+ * verificada por sobreposição — não é vetorização automática de PNG. Ainda
+ * assim, ela é provisória: a narrativa da home desenha esse traço, então o
+ * vetor oficial é bloqueio de lançamento.
+ */
+export const brandAssets = {
+  symbolSvg: pending(
+    'SVG oficial do símbolo da montanha — a home anima esse traço; hoje roda sobre reconstrução medida (public/brand/README.md)',
+    { owner: 'Velmont' },
+  ),
+  logoSvg: pending('SVG oficial do logo completo, positivo e negativo', { owner: 'Velmont' }),
+  brandManual: pending('Manual de marca, para confirmar cores e tipografia oficiais', {
+    owner: 'Velmont',
+  }),
+} as const;
+
 /**
  * Tudo o que precisa de resposta antes do lançamento, em um só lugar.
  * `npm run check:content` lê esta lista.
  */
 export const pendingRegistry = {
   brand: [brand.legalName],
+  brandAssets: [brandAssets.symbolSvg, brandAssets.logoSvg, brandAssets.brandManual],
   metrics: metrics.map((metric) => metric.value),
   founders: founders.flatMap((founder) => [founder.quote, founder.portrait]),
   testimonials,

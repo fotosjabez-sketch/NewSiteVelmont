@@ -20,6 +20,26 @@ Tudo de uma vez: `npm run check`.
 
 ---
 
+## Motion — a subida (fase 3)
+
+- [x] Sincronia: em 41 pontos do percurso, o traço desenhado acompanha a
+      fração de scroll 1:1 e cada beat ativa na sua altitude
+- [x] Nunca mais de um beat acima de 50% de opacidade ao mesmo tempo
+- [x] Nunca um instante sem beat legível (mínimo observado: 0,66)
+- [x] Scroll rápido: saltos grandes assentam no estado correto
+- [x] Redimensionamento: scrub correto em 1440, 1100 e volta, com
+      `invalidateOnRefresh`
+- [x] Sete trocas de breakpoint seguidas sem acúmulo de timeline
+- [x] Refresh no meio da página: posição, traço e beat idênticos depois do
+      reload
+- [x] `prefers-reduced-motion: reduce`: fluxo vertical, quatro beats visíveis,
+      montanha inteira desenhada, nenhum GSAP montado
+- [x] Sem JavaScript: os quatro textos estão no HTML e a seção continua legível
+- [x] Teclado: âncora "Comece pela ideia" leva à seção; a tabulação atravessa
+      a seção e sai — o foco não fica preso no palco
+- [x] Console sem erros
+- [x] CLS 0 em desktop e mobile
+
 ## Responsividade
 
 Medido com `document.documentElement.scrollWidth === clientWidth` na home
@@ -30,6 +50,8 @@ inteira, depois de rolar a página toda para carregar tudo:
 - [x] 768px — sem scroll lateral
 - [x] 1024px — sem scroll lateral
 - [x] 1440px — sem scroll lateral
+- [x] 834px e 1920px — sem scroll lateral (a montanha do palco sangra até a
+      borda útil do contêiner, com margem negativa igual à goteira)
 - [x] Strings longas sem espaço (e-mail) quebram em vez de esticar a coluna
 - [x] As montanhas decorativas sangram além da viewport de propósito, sempre
       dentro de um contêiner com `overflow-hidden`
