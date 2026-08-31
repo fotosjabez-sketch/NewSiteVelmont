@@ -1,0 +1,160 @@
+/*
+ * Velmont — design tokens
+ * ---------------------------------------------------------------------------
+ * Fonte da verdade para cor, tipografia, ritmo, grid, forma e movimento.
+ * Nenhum valor cru deve ser escrito em componentes: tudo passa por aqui.
+ *
+ * O bloco @theme é lido pelo Tailwind v4 e gera as utilidades (bg-wine,
+ * text-sand, etc.) e, ao mesmo tempo, expõe cada token como custom property.
+ */
+
+@theme {
+  /* ---------------------------------------------------------------------
+   * Cor
+   * Vinho e areia foram medidos diretamente na apresentação oficial.
+   * Os demais tons são derivados e aguardam confirmação no manual de marca.
+   * ------------------------------------------------------------------- */
+  --color-wine-950: #1a0209;
+  --color-wine: #2d0414; /* oficial — fundo de impacto, header, CTA */
+  --color-wine-800: #3e0a1d;
+  --color-wine-700: #52142a;
+  --color-ember: #632523; /* secundário presente na apresentação */
+
+  --color-sand: #e9d4b3; /* oficial — texto sobre vinho, áreas editoriais */
+  --color-sand-600: #c9b394; /* texto secundário sobre vinho (9.1:1) */
+  --color-sand-400: #d8bc93;
+
+  --color-ivory: #f7f2e8; /* fundo principal claro */
+  --color-paper: #fffdf8; /* superfícies de leitura */
+  --color-ink: #1e1116; /* texto em fundos claros */
+
+  --color-clay: #8b6c63; /* bordas, legendas grandes, elementos decorativos */
+  --color-clay-ink: #6e524b; /* texto secundário em fundo claro (6.3:1) */
+
+  /* ---------------------------------------------------------------------
+   * Tipografia
+   * Newsreader (serif editorial) + Geist Sans (interface).
+   * Carregadas localmente via next/font — sem layout shift, sem requisição
+   * externa. As variáveis --font-* são atribuídas em app/layout.tsx.
+   * ------------------------------------------------------------------- */
+  --font-serif: var(--font-newsreader), Georgia, 'Times New Roman', serif;
+  --font-sans:
+    var(--font-geist-sans), -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+
+  --text-xs: clamp(0.72rem, 0.68rem + 0.15vw, 0.82rem);
+  --text-sm: clamp(0.88rem, 0.84rem + 0.18vw, 1rem);
+  --text-base: clamp(1rem, 0.96rem + 0.22vw, 1.15rem);
+  --text-lg: clamp(1.25rem, 1.08rem + 0.7vw, 1.75rem);
+  --text-xl: clamp(1.75rem, 1.28rem + 1.8vw, 3rem);
+  --text-2xl: clamp(2.6rem, 1.5rem + 4.2vw, 6.5rem);
+  --text-display: clamp(3.25rem, 1.4rem + 7.2vw, 10rem);
+
+  --leading-display: 0.94;
+  --leading-tight: 1.06;
+  --leading-snug: 1.24;
+  --leading-normal: 1.5;
+  --leading-relaxed: 1.68;
+
+  --tracking-display: -0.028em;
+  --tracking-tight: -0.015em;
+  --tracking-normal: 0;
+  --tracking-eyebrow: 0.14em;
+  --tracking-caps: 0.22em;
+
+  /* ---------------------------------------------------------------------
+   * Ritmo e grid
+   * ------------------------------------------------------------------- */
+  --container-max: 1400px;
+  --gutter: clamp(20px, 5vw, 80px);
+  --section-y: clamp(88px, 12vw, 190px);
+  --measure: 65ch; /* parágrafo de marketing */
+  --measure-article: 68ch; /* corpo de artigo em serif */
+
+  --space-3xs: 0.25rem;
+  --space-2xs: 0.5rem;
+  --space-xs: 0.75rem;
+  --space-sm: 1rem;
+  --space-md: 1.5rem;
+  --space-lg: 2.5rem;
+  --space-xl: clamp(3rem, 6vw, 5rem);
+  --space-2xl: clamp(4.5rem, 9vw, 8rem);
+
+  /* ---------------------------------------------------------------------
+   * Forma — cantos discretos, quase retos. Nada de cápsulas.
+   * ------------------------------------------------------------------- */
+  --radius-none: 0px;
+  --radius-xs: 2px;
+  --radius-sm: 4px;
+  --radius-md: 8px;
+  --radius-lg: 10px;
+
+  --border-hairline: 1px;
+
+  /* ---------------------------------------------------------------------
+   * Movimento
+   * Movimento explica hierarquia, progresso ou relação. Nada decorativo.
+   * ------------------------------------------------------------------- */
+  --ease-out: cubic-bezier(0.22, 1, 0.36, 1);
+  --ease-in-out: cubic-bezier(0.65, 0, 0.35, 1);
+  --ease-entrance: cubic-bezier(0.16, 1, 0.3, 1);
+
+  --duration-instant: 90ms;
+  --duration-fast: 180ms;
+  --duration-base: 320ms;
+  --duration-slow: 620ms;
+  --duration-narrative: 1100ms;
+}
+
+/*
+ * Superfícies
+ * ---------------------------------------------------------------------------
+ * Cada superfície publica o mesmo contrato de variáveis. Componentes usam
+ * --surface-fg / --surface-muted / --surface-rule / --surface-ring e nunca
+ * uma cor literal, de modo que o contraste continua correto em qualquer tom.
+ * Todas as combinações abaixo passam em AA para o uso a que se destinam.
+ */
+:root,
+[data-surface='paper'] {
+  --surface-bg: var(--color-paper);
+  --surface-fg: var(--color-ink);
+  --surface-muted: var(--color-clay-ink);
+  --surface-rule: color-mix(in srgb, var(--color-clay) 32%, transparent);
+  --surface-ring: var(--color-wine);
+  --surface-accent: var(--color-wine);
+}
+
+[data-surface='ivory'] {
+  --surface-bg: var(--color-ivory);
+  --surface-fg: var(--color-ink);
+  --surface-muted: var(--color-clay-ink);
+  --surface-rule: color-mix(in srgb, var(--color-clay) 34%, transparent);
+  --surface-ring: var(--color-wine);
+  --surface-accent: var(--color-wine);
+}
+
+[data-surface='sand'] {
+  --surface-bg: var(--color-sand);
+  --surface-fg: var(--color-wine-950);
+  --surface-muted: color-mix(in srgb, var(--color-wine-950) 74%, var(--color-sand));
+  --surface-rule: color-mix(in srgb, var(--color-wine-950) 22%, transparent);
+  --surface-ring: var(--color-wine);
+  --surface-accent: var(--color-wine);
+}
+
+[data-surface='wine'] {
+  --surface-bg: var(--color-wine);
+  --surface-fg: var(--color-sand);
+  --surface-muted: var(--color-sand-600);
+  --surface-rule: color-mix(in srgb, var(--color-sand) 22%, transparent);
+  --surface-ring: var(--color-sand);
+  --surface-accent: var(--color-sand);
+}
+
+[data-surface='ink'] {
+  --surface-bg: var(--color-wine-950);
+  --surface-fg: var(--color-sand);
+  --surface-muted: var(--color-sand-600);
+  --surface-rule: color-mix(in srgb, var(--color-sand) 18%, transparent);
+  --surface-ring: var(--color-sand);
+  --surface-accent: var(--color-sand);
+}
