@@ -157,6 +157,23 @@ document.documentElement.scrollWidth - document.documentElement.clientWidth; // 
 
 ---
 
+## Deploy
+
+- [x] Build passa com `NEXT_PUBLIC_SITE_URL` vazia, só com espaços, sem
+      esquema, com valor inválido e com barra final
+- [x] `siteConfig.url` nunca é string vazia: `new URL()` em
+      `lib/seo/metadata.ts` e em `app/sitemap.ts` não tem como estourar
+- [ ] Definir o domínio final e apontar `NEXT_PUBLIC_SITE_URL` para ele
+
+### Avisos conhecidos no build da Vercel, sem impacto
+
+| Aviso                                                                     | Situação                                                                                                                                                                                                                                             |
+| ------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
+| `allow-scripts`: `esbuild` e `unrs-resolver` com postinstall não aprovado | Ambos são dependências de desenvolvimento — `esbuild` vem do `tsx`, usado só em `check:content`, e `unrs-resolver` vem do resolvedor de imports do ESLint. Nenhum participa de `next build`. Aprovar com `npm approve-scripts` silencia o aviso      |
+| `eslint@9.39.5 deprecated`                                                | O ESLint 10 quebra o `eslint-plugin-react` que vem dentro do `eslint-config-next` 16 (`getReactVersionFromContext`). Ficamos na 9 até o `eslint-config-next` suportar a 10. O Next 16 não roda ESLint durante o build, então isso não afeta o deploy |
+
+---
+
 ## Bloqueios de lançamento em aberto
 
 Além das 10 pendências de dados listadas em `docs/content-inventory.md`:

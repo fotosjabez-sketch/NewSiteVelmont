@@ -72,7 +72,10 @@ export function Header() {
         (isScrolled || isMenuOpen) && 'border-b border-(--surface-rule)',
       )}
     >
-      <Container className="flex h-(--header-height) items-center justify-between gap-6">
+      {/* No desktop as três colunas são 1fr / auto / 1fr: assim o menu fica no
+          eixo real da página, e não deslocado pela largura do logo ou do CTA.
+          No mobile o menu some e sobra logo à esquerda, botão à direita. */}
+      <Container className="flex h-(--header-height) items-center justify-between gap-6 lg:grid lg:grid-cols-[1fr_auto_1fr]">
         <Logo
           tone="ivory"
           width={132}
@@ -81,7 +84,10 @@ export function Header() {
           onClick={() => setIsMenuOpen(false)}
         />
 
-        <nav aria-label="Navegação principal" className="hidden items-center gap-8 lg:flex">
+        <nav
+          aria-label="Navegação principal"
+          className="hidden items-center justify-center gap-8 lg:flex"
+        >
           {primaryNav.map((item) => {
             const isCurrent = pathname === item.href || pathname.startsWith(`${item.href}/`);
             return (
@@ -102,7 +108,7 @@ export function Header() {
           })}
         </nav>
 
-        <div className="flex items-center gap-3">
+        <div className="flex items-center gap-3 lg:justify-end">
           {/* O wrapper controla a visibilidade: aplicar `hidden` direto no
               botão competiria com o `inline-flex` da própria base. */}
           <div className="hidden lg:block">

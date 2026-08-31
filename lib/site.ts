@@ -5,13 +5,56 @@ import { contact, resolve } from '@/lib/content';
  * nunca espalhados por componentes.
  */
 
+/**
+ * Domínio de origem, quando nada mais responde.
+ * PENDENTE: o domínio final ainda não foi definido — ver docs/content-inventory.md.
+ */
+const FALLBACK_SITE_URL = 'https://www.grupovelmont.com';
+
+/**
+ * Resolve a URL canônica do site.
+ *
+ * `??` não serve aqui: ele só cai no fallback para `null` e `undefined`. Uma
+ * variável de ambiente declarada e vazia — que é o que a Vercel entrega quando
+ * o campo existe sem valor — passava direto, `siteConfig.url` virava string
+ * vazia e `new URL('')` derrubava o build inteiro na coleta de configuração.
+ *
+ * Então cada candidata é testada de verdade: espaços fora, esquema
+ * acrescentado quando vem só o domínio, e `new URL` dentro de try/catch. Se
+ * nenhuma servir, vale o domínio de origem — nunca uma string vazia.
+ */
+function resolveSiteUrl(): string {
+  const candidates = [
+    process.env.NEXT_PUBLIC_SITE_URL,
+    // Domínio de produção do projeto na Vercel. Estável entre deploys, ao
+    // contrário de VERCEL_URL, que muda a cada um e faria a canonical de um
+    // preview apontar para ele mesmo.
+    process.env.VERCEL_PROJECT_PRODUCTION_URL,
+  ];
+
+  for (const candidate of candidates) {
+    const trimmed = candidate?.trim();
+    if (!trimmed) continue;
+
+    const withScheme = /^https?:\/\//i.test(trimmed) ? trimmed : `https://${trimmed}`;
+    try {
+      return new URL(withScheme).origin;
+    } catch {
+      // Valor inválido: tenta a próxima candidata em vez de derrubar o build.
+      continue;
+    }
+  }
+
+  return FALLBACK_SITE_URL;
+}
+
 export const siteConfig = {
   name: 'Velmont',
   title: 'Velmont — Marcas e Patentes',
   description:
     'A Velmont protege marcas, softwares, criações e inovações com estratégia, transparência e acompanhamento próximo em cada etapa.',
   locale: 'pt-BR',
-  url: process.env.NEXT_PUBLIC_SITE_URL ?? 'https://www.grupovelmont.com',
+  url: resolveSiteUrl(),
 } as const;
 
 /**
